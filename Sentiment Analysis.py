@@ -12,6 +12,7 @@ from textblob import TextBlob
 import numpy as np
 import matplotlib.dates as mdates
 import string
+import re
 
 #input your credentials here
 # keys and tokens from the Twitter Dev Console
@@ -35,6 +36,7 @@ query = raw_input("Enter your search item:")
 csvWriter.writerow(['Created','Text','Retweet Count'])
 
 def remove_punct(text):
+    text=str(text)
     text  = "".join([char for char in text if char not in string.punctuation])
     text = re.sub('[0-9]+', '', text)
     return text
