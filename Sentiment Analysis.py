@@ -11,7 +11,7 @@ import matplotlib.pylab as plt
 from textblob import TextBlob
 import numpy as np
 import matplotlib.dates as mdates
-
+import string
 
 #input your credentials here
 # keys and tokens from the Twitter Dev Console
@@ -34,6 +34,12 @@ csvWriter = csv.writer(csvFile)
 query = raw_input("Enter your search item:")
 csvWriter.writerow(['Created','Text','Retweet Count'])
 
+def remove_punct(text):
+    text  = "".join([char for char in text if char not in string.punctuation])
+    text = re.sub('[0-9]+', '', text)
+    return text
+
+
 for tweet in tweepy.Cursor(api.search,
                            q=query,
                            count=5,
@@ -41,7 +47,7 @@ for tweet in tweepy.Cursor(api.search,
                            include_entities=True,
                            lang="en").items(5000):
     
-    csvWriter.writerow([tweet.created_at, tweet.text.encode('utf-8'),tweet.retweet_count])
+    csvWriter.writerow([tweet.created_at, remove_punct(tweet.text.encode('utf-8')),tweet.retweet_count])
     
 csvFile.close()    
 
